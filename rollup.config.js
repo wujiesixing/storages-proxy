@@ -1,13 +1,15 @@
+import pkg from './package.json';
+
 export default {
   input: 'src/index.js',
   output: [
     {
-      file: 'dist/es/index.js',
+      file: pkg.module,
       format: 'es',
     },
     {
       name: 'Storages',
-      file: 'dist/iife/index.js',
+      file: pkg.main,
       format: 'iife',
     },
   ],
