@@ -37,7 +37,7 @@ export default function storage(type) {
               const reg = new RegExp(`^${getKey('', attrs)}.+`);
               return reg.test(key);
             });
-            return list[num];
+            return list[num] ?? null;
           }
           return target.key(num);
         };
