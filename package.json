@@ -25,6 +25,9 @@
     "domain",
     "path"
   ],
+  "files": [
+    "dist/**/*"
+  ],
   "author": "Gavin",
   "license": "MIT",
   "bugs": {
