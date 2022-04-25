@@ -3,15 +3,13 @@ export default function storage(type) {
   function getKey(
     key,
     {
-      domain = window.__STORAGES_DEFAULT__[type].domain ||
-        window.location.hostname,
       path = window.__STORAGES_DEFAULT__[type].path ||
         window.location.pathname.replace(/\/[^/]*$/, '') ||
         '/',
     } = {},
   ) {
     if (typeof key === 'symbol') return key;
-    return `domain=${domain};path=${path};${key}`;
+    return `path=${path};${key}`;
   }
 
   const storageProxy = new Proxy(window[type], {

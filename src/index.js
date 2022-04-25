@@ -3,19 +3,17 @@ import storage from './storage';
 
 window.__STORAGES_DEFAULT__ = {
   localStorage: {
-    domain: null,
     path: null,
   },
   sessionStorage: {
-    domain: null,
     path: null,
   },
 };
 
 const localStorage = storage('localStorage');
 
-function createGlobalLocalStorage({ domain, path } = {}) {
-  window.__STORAGES_DEFAULT__.localStorage = { domain, path };
+function createGlobalLocalStorage({ path } = {}) {
+  window.__STORAGES_DEFAULT__.localStorage = { path };
   Object.defineProperty(window, 'localStorage', {
     configurable: true,
     enumerable: true,
@@ -25,8 +23,8 @@ function createGlobalLocalStorage({ domain, path } = {}) {
 
 const sessionStorage = storage('sessionStorage');
 
-function createGlobalSessionStorage({ domain, path } = {}) {
-  window.__STORAGES_DEFAULT__.sessionStorage = { domain, path };
+function createGlobalSessionStorage({ path } = {}) {
+  window.__STORAGES_DEFAULT__.sessionStorage = { path };
   Object.defineProperty(window, 'sessionStorage', {
     configurable: true,
     enumerable: true,
