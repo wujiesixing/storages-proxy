@@ -48,7 +48,7 @@ export default function storage(type) {
             Object.keys(localStorage).forEach((key) => {
               const reg = new RegExp(`^${getKey('', attrs)}.+`);
               if (reg.test(key)) {
-                Reflect.deleteProperty(target, getKey(key, attrs));
+                target.removeItem(key);
               }
             });
             return undefined;
