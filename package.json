@@ -1,13 +1,13 @@
 {
   "name": "storages-proxy",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A simple, lightweight JavaScript API for handling browser storages",
   "main": "dist/iife/index.js",
   "module": "dist/es/index.js",
   "scripts": {
     "prepare": "husky install",
     "lint": "eslint . --ext .js,.mjs,cjs,.ts --fix",
-    "build": "rollup"
+    "build": "rollup -c"
   },
   "repository": {
     "type": "git",
