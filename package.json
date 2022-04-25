@@ -1,0 +1,44 @@
+{
+  "name": "js-storage",
+  "version": "1.0.0",
+  "description": "A simple, lightweight JavaScript API for handling browser storages",
+  "main": "dist/iife/index.js",
+  "module": "dist/es/index.js",
+  "scripts": {
+    "prepare": "husky install",
+    "lint": "eslint . --ext .js,.mjs,cjs,.ts --fix",
+    "build": "rollup"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wujiesixing/js-storage.git"
+  },
+  "keywords": [
+    "storage",
+    "storages",
+    "localStorage",
+    "sessionStorage",
+    "js-storage",
+    "js-storages",
+    "js-localStorage",
+    "js-sessionStorage",
+    "domain",
+    "path"
+  ],
+  "author": "Gavin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wujiesixing/js-storage/issues"
+  },
+  "homepage": "https://github.com/wujiesixing/js-storage#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^16.2.3",
+    "@commitlint/config-conventional": "^16.2.1",
+    "eslint": "^8.13.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "husky": "^7.0.4",
+    "rollup": "^2.70.2"
+  }
+}
