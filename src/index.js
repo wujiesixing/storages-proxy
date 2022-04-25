@@ -14,7 +14,7 @@ window.__STORAGES_DEFAULT__ = {
 
 const localStorage = storage('localStorage');
 
-function createGlobalLocalStorage({ domain, path }) {
+function createGlobalLocalStorage({ domain, path } = {}) {
   window.__STORAGES_DEFAULT__.localStorage = { domain, path };
   Object.defineProperty(window, 'localStorage', {
     configurable: true,
@@ -25,7 +25,7 @@ function createGlobalLocalStorage({ domain, path }) {
 
 const sessionStorage = storage('sessionStorage');
 
-function createGlobalSessionStorage({ domain, path }) {
+function createGlobalSessionStorage({ domain, path } = {}) {
   window.__STORAGES_DEFAULT__.sessionStorage = { domain, path };
   Object.defineProperty(window, 'sessionStorage', {
     configurable: true,
