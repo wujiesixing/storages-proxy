@@ -1,15 +1,16 @@
 /* eslint-disable no-underscore-dangle */
 export default function storage(type) {
-  function getKey(
-    key,
-    {
-      path = window.__STORAGES_DEFAULT__[type].path ||
-        window.location.pathname.replace(/\/[^/]*$/, '') ||
-        '/',
-    } = {},
-  ) {
+  function getPrefix({
+    path = window.__STORAGES_DEFAULT__[type].path ||
+      window.location.pathname.replace(/\/[^/]*$/, '') ||
+      '/',
+  } = {}) {
+    return `path=${path};`;
+  }
+
+  function getKey(key, attrs) {
     if (typeof key === 'symbol') return key;
-    return `path=${path};${key}`;
+    return `${getPrefix(attrs)}${key}=`;
   }
 
   const storageProxy = new Proxy(window[type], {
@@ -32,7 +33,7 @@ export default function storage(type) {
         return (num, attrs) => {
           if (attrs) {
             const list = Object.keys(localStorage).filter((key) => {
-              const reg = new RegExp(`^${getKey('', attrs)}.+`);
+              const reg = new RegExp(`^${getPrefix(attrs)}.+`);
               return reg.test(key);
             });
             return list[num] ?? null;
@@ -44,7 +45,7 @@ export default function storage(type) {
         return (attrs) => {
           if (attrs) {
             Object.keys(localStorage).forEach((key) => {
-              const reg = new RegExp(`^${getKey('', attrs)}.+`);
+              const reg = new RegExp(`^${getPrefix(attrs)}.+`);
               if (reg.test(key)) {
                 target.removeItem(key);
               }
