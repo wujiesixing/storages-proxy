@@ -1,11 +1,19 @@
 /* eslint-disable no-underscore-dangle */
+
+export const STORAGES_DEFAULT_PATH = 'null';
+
+export function formatPath(path, type) {
+  return (
+    (path ??
+      (type ? window.__STORAGES_DEFAULT__[type].path : STORAGES_DEFAULT_PATH) ??
+      window.location.pathname.replace(/\/[^/]*$/, '')) ||
+    '/'
+  );
+}
+
 export default function storage(type) {
-  function getPrefix({
-    path = window.__STORAGES_DEFAULT__[type].path ||
-      window.location.pathname.replace(/\/[^/]*$/, '') ||
-      '/',
-  } = {}) {
-    return `path=${path};`;
+  function getPrefix({ path } = {}) {
+    return `path=${formatPath(path, type)};`;
   }
 
   function getKey(key, attrs) {
@@ -31,28 +39,28 @@ export default function storage(type) {
       }
       if (property === 'key') {
         return (num, attrs) => {
-          if (attrs) {
-            const list = Object.keys(localStorage).filter((key) => {
-              const reg = new RegExp(`^${getPrefix(attrs)}.+`);
-              return reg.test(key);
-            });
-            return list[num] ?? null;
+          if (attrs === null) {
+            return target.key(num);
           }
-          return target.key(num);
+          const list = Object.keys(localStorage).filter((key) => {
+            const reg = new RegExp(`^${getPrefix(attrs)}.+`);
+            return reg.test(key);
+          });
+          return list[num] ?? null;
         };
       }
       if (property === 'clear') {
         return (attrs) => {
-          if (attrs) {
-            Object.keys(localStorage).forEach((key) => {
-              const reg = new RegExp(`^${getPrefix(attrs)}.+`);
-              if (reg.test(key)) {
-                target.removeItem(key);
-              }
-            });
-            return undefined;
+          if (attrs === null) {
+            return target.clear();
           }
-          return target.clear();
+          Object.keys(localStorage).forEach((key) => {
+            const reg = new RegExp(`^${getPrefix(attrs)}.+`);
+            if (reg.test(key)) {
+              target.removeItem(key);
+            }
+          });
+          return undefined;
         };
       }
       if (property === 'length') {
