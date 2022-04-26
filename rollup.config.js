@@ -1,6 +1,7 @@
 import filesize from 'rollup-plugin-filesize';
 import license from 'rollup-plugin-license';
 import { terser } from 'rollup-plugin-terser';
+import { babel } from '@rollup/plugin-babel';
 import pkg from './package.json';
 
 export default {
@@ -28,6 +29,12 @@ export default {
     },
   ],
   plugins: [
+    babel({
+      exclude: 'node_modules/**',
+      babelHelpers: 'runtime',
+      plugins: ['@babel/plugin-transform-runtime'],
+      presets: ['@babel/preset-env'],
+    }),
     license({
       banner: {
         content:
