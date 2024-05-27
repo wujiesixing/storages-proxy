@@ -32,25 +32,26 @@ pnpm add storages-proxy
 
 ### createGlobalStorage
 
-`createGlobalStorage(type: Type, attrs?: Attrs): void`
+`createGlobalStorage(type: Type, options?: Partial<Options>): void`
 
 创建指定类型的全局存储，并设置作用域。
 
 #### 参数
 
 - `type` (`Type`): 存储类型，可以是 `localStorage` 或 `sessionStorage`。
-- `attrs` (`Attrs`, 可选): 存储的属性配置，包括路径。
+- `options` (`Partial<Options>`, 可选): 存储的属性配置，包括路径。
 
 ### updateGlobalStorage
 
-`updateGlobalStorage(type: Type, attrs?: Attrs): void`
+`updateGlobalStorage(type: Type, options?: Partial<Options>, force?: boolean): void`
 
 更新指定类型的全局存储的作用域。
 
 #### 参数
 
 - `type` (`Type`): 存储类型，可以是 `localStorage` 或 `sessionStorage`。
-- `attrs` (`Attrs`, 可选): 存储的属性配置，包括路径。
+- `options` (`Partial<Options>`, 可选): 存储的属性配置，包括路径。
+- `force` (`boolean`, 可选): 是否重置属性配置。
 
 ## 示例
 
@@ -63,11 +64,11 @@ import {
 
 // 创建 `默认作用域为当前路径` 的 localStorage 和 sessionStorage
 createGlobalStorage('localStorage');
-createGlobalStorage('sessionStorage');
+createGlobalStorage('localStorage', { include: [ 'key' ] });
 
 // 创建 `默认作用域为指定路径` 的 localStorage 和 sessionStorage
 createGlobalStorage('localStorage', { path: '/path' });
-createGlobalStorage('sessionStorage', { path: '/path' });
+createGlobalStorage('localStorage', { path: '/path', include: [ 'key' ] });
 
 // 更新 localStorage 的默认作用域为当前路径
 updateGlobalStorage('localStorage');
@@ -81,7 +82,7 @@ localStorage.key = 'value';
 localStorage.setItem('key1', 'value1');
 
 // 设置一个键值对，使用指定作用域
-localStorage.setItem('key2', 'value2', { path: '/path' });
+localStorage.setItem('key2', 'value2', '/path');
 
 // 设置一个键值对，不使用作用域
 localStorage.setItem('key3', 'value3', null);
@@ -92,7 +93,7 @@ console.log(localStorage.key); // 输出 'value'
 console.log(localStorage.getItem('key1')); // 输出 'value1'
 
 // 获取一个键值对，使用指定作用域
-console.log(localStorage.getItem('key2', { path: '/path' })); // 输出 'value2'
+console.log(localStorage.getItem('key2', '/path')); // 输出 'value2'
 
 // 获取一个键值对，不使用作用域
 console.log(localStorage.getItem('key3', null)); // 输出 'value3'
@@ -103,7 +104,7 @@ delete localStorage.key;
 localStorage.removeItem('key1');
 
 // 移除一个键值对，使用指定作用域
-localStorage.removeItem('key2', { path: '/path' });
+localStorage.removeItem('key2', '/path');
 
 // 移除一个键值对，不使用作用域
 localStorage.removeItem('key3', null);
@@ -112,7 +113,7 @@ localStorage.removeItem('key3', null);
 localStorage.key(0);
 
 // 获取指定作用域下第 n 个键名
-localStorage.key(0, { path: '/path' });
+localStorage.key(0, '/path');
 
 // 获取第 n 个键名
 localStorage.key(0, null);
@@ -121,7 +122,7 @@ localStorage.key(0, null);
 localStorage.clear();
 
 // 清除指定作用域下的所有键值对
-localStorage.clear({ path: '/path' });
+localStorage.clear('/path');
 
 // 清除所有键值对
 localStorage.clear(null);
@@ -132,7 +133,7 @@ localStorage.length;
 length('localStorage');
 
 // 获取指定作用域下的数据项数量
-length('localStorage', { path: '/new-path' });
+length('localStorage', '/path');
 
 // 获取数据项数量
 length('localStorage', null);
@@ -145,11 +146,11 @@ export type Type = 'localStorage' | 'sessionStorage';
 
 export type Path = string | (() => string);
 
-export type Attrs = { path: Path };
+export type Options = { path: Path, include?: string[],  exclude?: string[] };
 
 declare global {
   interface Window {
-    __STORAGES_DEFAULT__: Record<Type, Attrs>;
+    __STORAGES_DEFAULT__: Record<Type, Options>;
     __STORAGES_INIT__: Record<Type, boolean>;
   }
 }
